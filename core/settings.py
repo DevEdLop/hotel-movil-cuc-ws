@@ -25,12 +25,16 @@ SECRET_KEY = 'django-insecure-+_s91tbu%2dq#r$p9yk%ex0^nxsq@vbc&6q95baj^w$hf5sl29
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['192.168.88.111', 'localhost', '127.0.0.1', '*']
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,13 +50,34 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -74,6 +99,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'core.middleware.CsrfExemptSessionAuthentication',
+    ),
+}
 
 
 # Database
@@ -111,6 +142,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # AUTH_USER_MODEL = 'users.UserData'
 
+
+""" CORS_ALLOWED_ORIGINS = [
+    "http://*",
+    "https://*",
+    "http://10.132.14.225",
+] """
 
 
 PASSWORD_HASHERS = [

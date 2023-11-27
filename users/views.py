@@ -13,12 +13,13 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def login(request):
     # print(request.data)
-    if request.method == 'GET':
+    if request.method == 'POST':
         email = request.data['email']
-        password = hashlib.sha256(request.data['password'].encode('utf-8')).hexdigest()
+        password = hashlib.sha256(
+            request.data['password'].encode('utf-8')).hexdigest()
         usuario = User.objects.filter(email=email, password=password)
         print('RRRR')
         print(usuario.exists())
@@ -29,13 +30,13 @@ def login(request):
 
 @api_view(['POST'])
 def register(request):
+    request.data._mutable = True
     user_serializer = UserSerializer(data=request.data)
-    hashed_password = hashlib.sha256(request.data['password'].encode('utf-8')).hexdigest()
+    hashed_password = hashlib.sha256(
+        request.data['password'].encode('utf-8')).hexdigest()
     request.data['password'] = hashed_password
     print(request.data['password'])
-    if user_serializer.is_valid(raise_exception=True):
+    if user_serializer.is_valid():
         user_serializer.save()
         return Response({'mensaje': 'Usuario creado exitosamente'}, status=status.HTTP_201_CREATED)
     return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
