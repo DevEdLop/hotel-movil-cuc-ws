@@ -117,11 +117,14 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '77FAMILIA@',
         'HOST': 'localhost',
-        'PORT': ''
+        'PORT': '',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
         }
 }
 
-
+DEFAULT_CHARSET = 'utf-8'
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
